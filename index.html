@@ -59,13 +59,19 @@
     }
 
     .view {
-      display: none;
       width: 100%;
       height: calc(100vh - 44px);
+      position: absolute;
+      top: 44px;
+      left: 0;
+      visibility: hidden;
+      pointer-events: none;
     }
 
     .view.active {
-      display: block;
+      visibility: visible;
+      pointer-events: auto;
+      z-index: 1;
     }
 
     .embed-frame {
@@ -84,6 +90,7 @@
       justify-content: center;
       height: 100%;
       padding: 40px 20px;
+      background: #f1f5f9;
     }
 
     .landing h2 {
@@ -101,8 +108,7 @@
     .cards {
       display: flex;
       gap: 20px;
-      flex-wrap: wrap;
-      justify-content: center;
+      flex-wrap: nowrap;
     }
 
     .card {
@@ -133,18 +139,22 @@
   <nav>
     <a class="brand" data-view="home">wx network</a>
     <div class="links">
+      <a data-view="latency">latency</a>
       <a data-view="alerts">alerts</a>
       <a data-view="trace">trace</a>
-      <a data-view="latency">latency</a>
     </div>
   </nav>
 
-  
   <div id="view-home" class="view active">
     <div class="landing">
       <h2>wx network</h2>
       <p>fire weather station monitoring tools</p>
       <div class="cards">
+        <a class="card" data-view="latency">
+          <div class="icon">📡</div>
+          <div class="title">data latency</div>
+          <div class="desc">Live station health and data latency status from AEM Elements360 by fire centre.</div>
+        </a>
         <a class="card" data-view="alerts">
           <div class="icon">🌤️</div>
           <div class="title">alerts dashboard</div>
@@ -154,11 +164,6 @@
           <div class="icon">📈</div>
           <div class="title">predicate trace</div>
           <div class="desc">Query historical hourly data with custom conditions across stations and years.</div>
-        </a>
-        <a class="card" data-view="latency">
-          <div class="icon">📡</div>
-          <div class="title">data latency</div>
-          <div class="desc">Live station health and data latency status from AEM Elements360 by fire centre.</div>
         </a>
       </div>
     </div>
@@ -186,33 +191,27 @@
     const loaded = { alerts: false, trace: false, latency: false };
 
     function switchView(name) {
-      
       document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
       document.getElementById('view-' + name).classList.add('active');
 
-      
       document.querySelectorAll('.links a').forEach(a => a.classList.remove('active'));
       const navLink = document.querySelector(`.links a[data-view="${name}"]`);
       if (navLink) navLink.classList.add('active');
 
-      
       if (SOURCES[name] && !loaded[name]) {
         document.getElementById('frame-' + name).src = SOURCES[name];
         loaded[name] = true;
       }
 
-      
       const titles = { home: 'wx network', alerts: 'wx network — alerts', trace: 'wx network — trace', latency: 'wx network — latency' };
       const icons  = { home: '⚡', alerts: '🌤️', trace: '📈', latency: '📡' };
       document.title = titles[name] || 'wx network';
       document.querySelector('link[rel="icon"]').href =
         `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>${icons[name] || '⚡'}</text></svg>`;
 
-      
       history.pushState(null, '', name === 'home' ? '#' : '#' + name);
     }
 
-    
     document.addEventListener('click', e => {
       const trigger = e.target.closest('[data-view]');
       if (trigger) {
@@ -221,13 +220,11 @@
       }
     });
 
-    
     window.addEventListener('popstate', () => {
       const hash = location.hash.replace('#', '') || 'home';
       switchView(hash);
     });
 
-    
     const initial = location.hash.replace('#', '') || 'home';
     if (initial !== 'home') switchView(initial);
   </script>
