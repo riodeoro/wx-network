@@ -15,7 +15,6 @@
       height: 100vh;
     }
 
-    /* ── Nav ── */
     nav {
       display: flex;
       align-items: center;
@@ -59,7 +58,6 @@
       border-bottom-color: #3b82f6;
     }
 
-    /* ── Views ── */
     .view {
       display: none;
       width: 100%;
@@ -70,7 +68,6 @@
       display: block;
     }
 
-    /* ── Iframe embed ── */
     .embed-frame {
       width: calc(100% / 1.05);
       height: calc((100vh - 44px) / 1.05);
@@ -79,7 +76,6 @@
       transform-origin: top left;
     }
 
-    /* ── Landing page ── */
     .landing {
       overflow: auto;
       display: flex;
@@ -140,7 +136,7 @@
     </div>
   </nav>
 
-  <!-- Home / Landing -->
+  
   <div id="view-home" class="view active">
     <div class="landing">
       <h2>wx network</h2>
@@ -160,12 +156,10 @@
     </div>
   </div>
 
-  <!-- Alerts (iframe lazy-loaded on first visit) -->
   <div id="view-alerts" class="view">
     <iframe id="frame-alerts" class="embed-frame"></iframe>
   </div>
 
-  <!-- Trace (iframe lazy-loaded on first visit) -->
   <div id="view-trace" class="view">
     <iframe id="frame-trace" class="embed-frame"></iframe>
   </div>
@@ -179,33 +173,33 @@
     const loaded = { alerts: false, trace: false };
 
     function switchView(name) {
-      // Toggle views
+      
       document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
       document.getElementById('view-' + name).classList.add('active');
 
-      // Toggle nav active state
+      
       document.querySelectorAll('.links a').forEach(a => a.classList.remove('active'));
       const navLink = document.querySelector(`.links a[data-view="${name}"]`);
       if (navLink) navLink.classList.add('active');
 
-      // Lazy-load iframe src on first visit
+      
       if (SOURCES[name] && !loaded[name]) {
         document.getElementById('frame-' + name).src = SOURCES[name];
         loaded[name] = true;
       }
 
-      // Update page title & favicon
+      
       const titles = { home: 'wx network', alerts: 'wx network — alerts', trace: 'wx network — trace' };
       const icons  = { home: '⚡', alerts: '🌤️', trace: '📈' };
       document.title = titles[name] || 'wx network';
       document.querySelector('link[rel="icon"]').href =
         `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>${icons[name] || '⚡'}</text></svg>`;
 
-      // Update URL hash (enables back/forward)
+      
       history.pushState(null, '', name === 'home' ? '#' : '#' + name);
     }
 
-    // Attach click handlers to anything with data-view
+    
     document.addEventListener('click', e => {
       const trigger = e.target.closest('[data-view]');
       if (trigger) {
@@ -214,13 +208,13 @@
       }
     });
 
-    // Handle browser back/forward
+    
     window.addEventListener('popstate', () => {
       const hash = location.hash.replace('#', '') || 'home';
       switchView(hash);
     });
 
-    // Restore view from hash on load
+    
     const initial = location.hash.replace('#', '') || 'home';
     if (initial !== 'home') switchView(initial);
   </script>
