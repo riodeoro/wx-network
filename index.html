@@ -101,6 +101,8 @@
     .cards {
       display: flex;
       gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     .card {
@@ -133,6 +135,7 @@
     <div class="links">
       <a data-view="alerts">alerts</a>
       <a data-view="trace">trace</a>
+      <a data-view="latency">latency</a>
     </div>
   </nav>
 
@@ -152,6 +155,11 @@
           <div class="title">predicate trace</div>
           <div class="desc">Query historical hourly data with custom conditions across stations and years.</div>
         </a>
+        <a class="card" data-view="latency">
+          <div class="icon">📡</div>
+          <div class="title">data latency</div>
+          <div class="desc">Live station health and data latency status from AEM Elements360 by fire centre.</div>
+        </a>
       </div>
     </div>
   </div>
@@ -164,13 +172,18 @@
     <iframe id="frame-trace" class="embed-frame"></iframe>
   </div>
 
+  <div id="view-latency" class="view">
+    <iframe id="frame-latency" class="embed-frame"></iframe>
+  </div>
+
   <script>
     const SOURCES = {
-      alerts: 'https://rdo-prod-wx-alerts-dashboard.hf.space',
-      trace:  'https://rdo-prod-wx-predicate-trace.hf.space'
+      alerts:  'https://rdo-prod-wx-alerts-dashboard.hf.space',
+      trace:   'https://rdo-prod-wx-predicate-trace.hf.space',
+      latency: 'https://rdo-prod-wx-data-latency.hf.space'
     };
 
-    const loaded = { alerts: false, trace: false };
+    const loaded = { alerts: false, trace: false, latency: false };
 
     function switchView(name) {
       
@@ -189,8 +202,8 @@
       }
 
       
-      const titles = { home: 'wx network', alerts: 'wx network — alerts', trace: 'wx network — trace' };
-      const icons  = { home: '⚡', alerts: '🌤️', trace: '📈' };
+      const titles = { home: 'wx network', alerts: 'wx network — alerts', trace: 'wx network — trace', latency: 'wx network — latency' };
+      const icons  = { home: '⚡', alerts: '🌤️', trace: '📈', latency: '📡' };
       document.title = titles[name] || 'wx network';
       document.querySelector('link[rel="icon"]').href =
         `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>${icons[name] || '⚡'}</text></svg>`;
