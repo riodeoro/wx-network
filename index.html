@@ -154,10 +154,10 @@
         <a class="card" data-view="latency">
           <div class="icon">📡</div>
           <div class="title">data latency</div>
-          <div class="desc">Live station health and data latency status from AEM Elements360 by fire centre.</div>
+          <div class="desc">Live data latency status by fire centre.</div>
         </a>
         <a class="card" data-view="alerts">
-          <div class="icon">🌤️</div>
+          <div class="icon">🌦️</div>
           <div class="title">alerts dashboard</div>
           <div class="desc">Automated diagnostics across RH, wind, temp, precip, and power by fire centre.</div>
         </a>
@@ -205,7 +205,7 @@
       }
 
       const titles = { home: 'wx network', alerts: 'wx network — alerts', trace: 'wx network — trace', latency: 'wx network — latency' };
-      const icons  = { alerts: '🌤️', trace: '📈', latency: '📡' };
+      const icons  = { alerts: '🌦️', trace: '📈', latency: '📡' };
       document.title = titles[name] || 'wx network';
 
       if (icons[name]) {
