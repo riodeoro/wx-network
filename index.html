@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>wx network</title>
-  <link rel="icon" href="station.png">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -205,15 +205,7 @@
       }
 
       const titles = { home: 'wx network', alerts: 'wx network — alerts', trace: 'wx network — trace', latency: 'wx network — latency' };
-      const icons  = { alerts: '🌦️', trace: '📈', latency: '📡' };
       document.title = titles[name] || 'wx network';
-
-      if (icons[name]) {
-        document.querySelector('link[rel="icon"]').href =
-          `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>${icons[name]}</text></svg>`;
-      } else {
-        document.querySelector('link[rel="icon"]').href = 'station.png';
-      }
 
       history.pushState(null, '', name === 'home' ? '#' : '#' + name);
     }
